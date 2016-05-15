@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Firefly RPG Game</title>
+
+	<script src="https://code.jquery.com/jquery-2.2.3.js" integrity="sha256-laXWtGydpwqJ8JA+X9x2miwmaiKhn8tVmOVEigRNtP4=" crossorigin="anonymous"></script>
+
+
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+
+</head>
+<body>
+<div class="jumbotron">
+	<h1 class="text-center">Firefly RPG Game</h1>
+</div>
+<div class="container">
+	<div class="row">
+	<button id="char1" class="btn character" value=char1><h1>Character 1</h1></button>
+	<button id="char2" class="btn character" value=char2><h1>Character 2</h1></button>
+	<button id="char3" class="btn character" value=char3><h1>Character 3</h1></button>
+	<button id="char4" class="btn character" value=char4><h1>Character 4</h1></button>
+	<button id="attack" class="btn" value=attack><h1>Attack</h1></button>
+	<button id="restart" class="btn" value=restart><h1>Restart</h1></button>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	var myChar = "";
+	var opponentChar = "";
+	var enemyArray = ["char1", "char2", "char3", "char4"];
+	var hitPoints = 0;
+	var attackPower = 0;
+	var haveCharacter = false;	//If you've picked your character or not
+	var haveAttacker = false;	//If you have an opponent or not
+
+
+	$('button').on("click", function(){
+		if(!haveCharacter && $(this).hasClass("character")) {	//Picking your character and setting up enemies
+			myChar = $(this).attr("value");
+			haveCharacter = true;
+
+			var i = enemyArray.indexOf(myChar);
+			enemyArray.splice(i, 1);				//Takes my character out of enemy array
+
+			console.log("My character is: " + myChar);
+			console.log("My enemies are: " + enemyArray);
+		}
+		else if(!haveAttacker && haveCharacter && $(this).hasClass("character") && $(this).attr("value") !== myChar) {	//You have a character and you're picking your opponent
+			opponentChar = $(this).attr("value");
+			haveAttacker = true;
+
+			var i = enemyArray.indexOf(opponentChar);
+			enemyArray.splice(i, 1);				//Takes the opponent out of the enemy array
+
+			console.log("My character is: " + myChar);
+			console.log("My enemies are: " + enemyArray);
+			console.log("I'm fighting: " + opponentChar);
+		}
+
+		//Attack button
+		if($(this).attr("value") == "attack") {
+			if(!haveCharacter) {
+				console.log("you need to pick your character first")
+			}
+			else if(!haveAttacker) {
+				console.log("pick your attacker");
+			}
+			else if(haveCharacter && haveAttacker) {
+				console.log("start fighting");
+			}
+
+		}
+	    
+	}); 
+
+
+
+
+
+
+
+
+
+});
+</script>
+
+</body>
+</html>
