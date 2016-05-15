@@ -29,36 +29,61 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	var myChar = "";
-	var opponentChar = "";
-	var enemyArray = ["char1", "char2", "char3", "char4"];
-	var hitPoints = 0;
-	var attackPower = 0;
+	var myChar;
+	var opponentChar;
+
+	var enemyArray = [ {
+		name: "char1",
+		hitPoints: 120,
+		attackPower: 5
+	}, {
+		name: "char2",
+		hitPoints: 100,
+		attackPower: 10 		
+	}, {
+		name: "char3",
+		hitPoints: 150,
+		attackPower: 15 
+	}, {
+		name: "char4",
+		hitPoints: 180,
+		attackPower: 20
+	} ];
+
 	var haveCharacter = false;	//If you've picked your character or not
 	var haveAttacker = false;	//If you have an opponent or not
 
 
 	$('button').on("click", function(){
 		if(!haveCharacter && $(this).hasClass("character")) {	//Picking your character and setting up enemies
-			myChar = $(this).attr("value");
+			var charID = $(this).attr("value");
+
+			for(var i = 0; i < enemyArray.length; i++) {
+				if(charID == enemyArray[i].name) {
+					myChar = enemyArray[i];			//Set myChar as Character Object
+					enemyArray.splice(i, 1);		//Takes my character out of enemy array
+				}
+			}
+
 			haveCharacter = true;
 
-			var i = enemyArray.indexOf(myChar);
-			enemyArray.splice(i, 1);				//Takes my character out of enemy array
-
-			console.log("My character is: " + myChar);
-			console.log("My enemies are: " + enemyArray);
 		}
-		else if(!haveAttacker && haveCharacter && $(this).hasClass("character") && $(this).attr("value") !== myChar) {	//You have a character and you're picking your opponent
-			opponentChar = $(this).attr("value");
+		else if(!haveAttacker && haveCharacter && $(this).hasClass("character") && $(this).attr("value") !== myChar.name) {	//You have a character and you're picking your opponent
+			var oppCharID = $(this).attr("value");
+
+			for(var i = 0; i < enemyArray.length; i++) {
+				if(oppCharID == enemyArray[i].name) {
+					opponentChar = enemyArray[i];			//Set opponentChar as Character Object
+					enemyArray.splice(i, 1);		//Takes the opponent out of the enemy array
+				}
+			}
+
+
 			haveAttacker = true;
 
-			var i = enemyArray.indexOf(opponentChar);
-			enemyArray.splice(i, 1);				//Takes the opponent out of the enemy array
-
-			console.log("My character is: " + myChar);
-			console.log("My enemies are: " + enemyArray);
-			console.log("I'm fighting: " + opponentChar);
+			console.log("My character is: " + myChar.name);
+			for(var i = 0; i < enemyArray.length; i++) { console.log("Enemies I'm not fighting: " + enemyArray[i].name) }
+			console.log("I'm fighting: " + opponentChar.name);
 		}
 
 		//Attack button
@@ -76,11 +101,6 @@ $(document).ready(function() {
 		}
 	    
 	}); 
-
-
-
-
-
 
 
 
