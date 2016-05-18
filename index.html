@@ -13,17 +13,22 @@
 
 </head>
 <body>
-<div class="jumbotron">
-	<h1 class="text-center">Firefly RPG Game</h1>
-</div>
-<div class="container">
+<div class="container-fluid">
 	<div class="row">
-	<button id="char1" class="btn character" value=char1><h1>Character 1</h1></button>
-	<button id="char2" class="btn character" value=char2><h1>Character 2</h1></button>
-	<button id="char3" class="btn character" value=char3><h1>Character 3</h1></button>
-	<button id="char4" class="btn character" value=char4><h1>Character 4</h1></button>
-	<button id="attack" class="btn" value=attack><h1>Attack</h1></button>
-	<button id="restart" class="btn" value=restart><h1>Restart</h1></button>
+		<h1 class="text-center">Firefly RPG Game</h1>
+	</div>
+	<div class="row">
+		<div id="picking"></div>
+<!-- 		<button id="char1" class="btn character" value=char1><h1>Character 1</h1></button>
+		<button id="char2" class="btn character" value=char2><h1>Character 2</h1></button>
+		<button id="char3" class="btn character" value=char3><h1>Character 3</h1></button>
+		<button id="char4" class="btn character" value=char4><h1>Character 4</h1></button> -->
+		<button id="restart" class="btn" value=restart><h1>Restart</h1></button>
+	</div>
+	<div class="row">
+		<div id="myguy" class="col-md-4"></div>
+		<div class="col-md-4"><button id="attack" class="btn" value=attack><h1>Attack</h1></button></div>
+		<div id="enemy" class="col-md-4"></div>
 	</div>
 </div>
 
@@ -53,30 +58,43 @@ $(document).ready(function() {
 	var haveCharacter = false;	//If you've picked your character or not
 	var haveAttacker = false;	//If you have an opponent or not
 
+	for(var i = 0; i < enemyArray.length; i++) {
+			$("#picking").append("<button id=" + enemyArray[i].name + " class='btn character' value=" + enemyArray[i].name + ">" + enemyArray[i].name + "<br> " + enemyArray[i].hitPoints + "<br> " + enemyArray[i].attackPower + " </div>");
+	}
+
 
 	$('button').on("click", function(){
 		if(!haveCharacter && $(this).hasClass("character")) {	//Picking your character and setting up enemies
-			var charID = $(this).attr("value");
+			// var charID = $(this).attr("value");
 
-			for(var i = 0; i < enemyArray.length; i++) {
-				if(charID == enemyArray[i].name) {
-					myChar = enemyArray[i];			//Set myChar as Character Object
-					enemyArray.splice(i, 1);		//Takes my character out of enemy array
-				}
-			}
+			// for(var i = 0; i < enemyArray.length; i++) {
+			// 	if(charID == enemyArray[i].name) {
+			// 		myChar = enemyArray[i];			//Set myChar as Character Object
+			// 		enemyArray.splice(i, 1);		//Takes my character out of enemy array
+			// 	}
+			// }
+
+			// var myCharHTML = "<button id=" + myChar.name + " class='btn character' value=" + myChar.name + "><h1>" + myChar.name + myChar.hitPoints + myChar.attackPower + "</h1></button>";
+
+			//var myCharHTML = myChar.name + myChar.hitPoints + myChar.attackPower
+
+			$("#myguy").append(this);
 
 			haveCharacter = true;
-
 		}
-		else if(!haveAttacker && haveCharacter && $(this).hasClass("character") && $(this).attr("value") !== myChar.name) {	//You have a character and you're picking your opponent
-			var oppCharID = $(this).attr("value");
+		else if(!haveAttacker && haveCharacter && $(this).hasClass("character")) {	//You have a character and you're picking your opponent
+			// var oppCharID = $(this).attr("value");
 
-			for(var i = 0; i < enemyArray.length; i++) {
-				if(oppCharID == enemyArray[i].name) {
-					opponentChar = enemyArray[i];			//Set opponentChar as Character Object
-					enemyArray.splice(i, 1);		//Takes the opponent out of the enemy array
-				}
-			}
+			// for(var i = 0; i < enemyArray.length; i++) {
+			// 	if(oppCharID == enemyArray[i].name) {
+			// 		opponentChar = enemyArray[i];			//Set opponentChar as Character Object
+			// 		enemyArray.splice(i, 1);		//Takes the opponent out of the enemy array
+			// 	}
+			// }
+
+			// var opponentHTML = "<button id=" + opponentChar.name + " class='btn character' value=" + opponentChar.name + "><h1>" + opponentChar.name + opponentChar.hitPoints + opponentChar.attackPower + "</h1></button>";
+
+			$("#enemy").append(this);
 
 
 			haveAttacker = true;
@@ -95,7 +113,25 @@ $(document).ready(function() {
 				console.log("pick your attacker");
 			}
 			else if(haveCharacter && haveAttacker) {
-				console.log("start fighting");
+				opponentChar.hitPoints = opponentChar.hitPoints - myChar.attackPower;	//Hit Them
+				if(opponentChar.hitPoints < 0) {
+					//Need to somehow HIDE the dead character
+					console.log("They die");
+					haveAttacker = false;
+				}
+				myChar.hitPoints = myChar.hitPoints - opponentChar.attackPower;	//Get Hit
+				if(myChar.hitPoints < 0) {
+					console.log("I die");
+				}
+
+				myChar.attackPower = myChar.attackPower + myChar.attackPower;	//Get Stronger
+
+
+				console.log("My Characters HP: " + myChar.hitPoints);
+				console.log("My Characters AP: " + myChar.attackPower);
+				console.log("My Opponent HP: " + opponentChar.hitPoints);
+				console.log("My Opponent AP: " + opponentChar.attackPower);
+				console.log("========================================");
 			}
 
 		}
