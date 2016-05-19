@@ -15,6 +15,28 @@ body {
 .character {
 	border-style: solid;
 	border-color: black;
-	background-color: white;
+	background-color: #FFFBDE;
 	font-family: serif;
+}
+
+.hero {
+	background-color: #FFF880;
+}
+
+.fighting {
+	background-color: #FF534F;
+}
+
+#picking {
+	opacity: 0.7;
+	background-color: white;
+	width: 700px;
+	height: 300px;
+	margin: 0 auto;
+	padding: 30px;
+}
+
+.theCenter {
+	margin: 0 auto;
+	padding: 30px;
 }

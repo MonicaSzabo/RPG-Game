@@ -7,7 +7,7 @@ $(document).ready(function() {
 		id: 0,
 		name: "Hufflepuff",
 		pic: 'assets/images/hufflepuff.jpg',
-		hitPoints: 130,
+		hitPoints: 20,
 		attackPower: 5
 	}, {
 		id: 1,
@@ -31,6 +31,7 @@ $(document).ready(function() {
 
 	var haveCharacter = false;	//If you've picked your character or not
 	var haveAttacker = false;	//If you have an opponent or not
+	var numEnemies = 3;
 
 
 	for(var i = 0; i < enemyArray.length; i++) {
@@ -40,6 +41,61 @@ $(document).ready(function() {
 	}
 
 	$("#picking").html(choices);
+
+	function restart() {		//Restarts all of the values
+		myChar;
+		opponentChar;
+
+		choices = [];
+		enemyArray = [ {
+			id: 0,
+			name: "Hufflepuff",
+			pic: 'assets/images/hufflepuff.jpg',
+			hitPoints: 20,
+			attackPower: 5
+		}, {
+			id: 1,
+			name: "Gryffindor",
+			pic: 'assets/images/gryffindor.png',
+			hitPoints: 120,
+			attackPower: 10 		
+		}, {
+			id: 2,
+			name: "Slytherin",
+			pic: 'assets/images/slytherin.png',
+			hitPoints: 125,
+			attackPower: 9 
+		}, {
+			id: 3,
+			name: "Ravenclaw",
+			pic: 'assets/images/ravenclaw.png',
+			hitPoints: 100,
+			attackPower: 7 
+		} ];
+		haveCharacter = false;
+		haveAttacker = false;
+		numEnemies = 3;
+
+		for(var i = 0; i < enemyArray.length; i++) {
+			choices += "<div id=" + enemyArray[i].id + " class='btn character text-center' value=" + enemyArray[i].id +
+			"><img class='houses' src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + "><br> " + enemyArray[i].hitPoints +
+			"<br> " + enemyArray[i].attackPower + " </div>";
+		}
+		$("#picking").html(choices);
+		$('.hero').remove();
+		$('.fighting').remove();
+	}
+
+	function printCharacters(enemyArray, myChar, opponentChar) {
+		var hero = "<div id=" + enemyArray[myChar].id + " class='btn character text-center hero' value=" + enemyArray[myChar].id +
+			"><img class='houses' src=" + enemyArray[myChar].pic + " alt=" + enemyArray[myChar].name + "><br> " + enemyArray[myChar].hitPoints +
+			"<br> " + enemyArray[myChar].attackPower + " </div>";
+		var badguy = "<div id=" + enemyArray[opponentChar].id + " class='btn character text-center fighting' value=" + enemyArray[opponentChar].id +
+			"><img class='houses' src=" + enemyArray[opponentChar].pic + " alt=" + enemyArray[opponentChar].name + "><br> " + enemyArray[opponentChar].hitPoints +
+			"<br> " + enemyArray[opponentChar].attackPower + " </div>";
+		$('.hero').html(hero);
+		$('.fighting').html(badguy);
+	}
 
 
 	$('.character').on("click", function(){
@@ -61,24 +117,35 @@ $(document).ready(function() {
 
 	$('#attack').on("click", function() {
 		if(!haveCharacter) {
-			console.log("you need to pick your character first")
+			alert("You need to pick your character first!")
 		}
 		else if(!haveAttacker) {
-			console.log("pick your attacker");
+			alert("Pick who you are fighting!");
 		}
 		else if(haveCharacter && haveAttacker) {
 			enemyArray[opponentChar].hitPoints  = enemyArray[opponentChar].hitPoints - enemyArray[myChar].attackPower;	//Hit Them
 			if(enemyArray[opponentChar].hitPoints < 0) {
-				$(".fighting").remove();
-				console.log("They die");
-				haveAttacker = false;
+				numEnemies--;
+				if(numEnemies > 0) {
+					$(".fighting").remove();
+					alert("You have defeated your foe! Pick another enemy!");
+					haveAttacker = false;
+				}
+				else {
+					alert("You have beat all the enemies!  Play again!");
+					restart();
+				}
+				
 			}
 			enemyArray[myChar].hitPoints = enemyArray[myChar].hitPoints - enemyArray[opponentChar].attackPower;	//Get Hit
 			if(enemyArray[myChar].hitPoints < 0) {
-				console.log("I die");
+				alert("You have been defeated!  Try again!");
+				restart();
 			}
 
 			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + 5;	//Get Stronger
+
+			printCharacters(enemyArray, myChar, opponentChar);
 
 
 			console.log("My Characters HP: " + enemyArray[myChar].hitPoints);
@@ -90,11 +157,7 @@ $(document).ready(function() {
 	});
 
 	$('#restart').on("click", function(){
-		var haveCharacter = false;
-		var haveAttacker = false;
-		var enemiesLeft = 3;
-		var myChar;
-		var opponentChar;
+		restart();
 	});
 
 
