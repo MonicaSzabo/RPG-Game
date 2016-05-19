@@ -9,5 +9,12 @@ body {
 }
 
 .houses {
-	width: 200px;
+	width: 100px;
+}
+
+.character {
+	border-style: solid;
+	border-color: black;
+	background-color: white;
+	font-family: serif;
 }

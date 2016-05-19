@@ -4,39 +4,39 @@ $(document).ready(function() {
 
 	var choices = [];
 	var enemyArray = [ {
-		id: 1,
+		id: 0,
 		name: "Hufflepuff",
-		pic: 'assets/images/hufflepuff.png',
-		hitPoints: 120,
+		pic: 'assets/images/hufflepuff.jpg',
+		hitPoints: 130,
 		attackPower: 5
 	}, {
-		id: 2,
+		id: 1,
 		name: "Gryffindor",
 		pic: 'assets/images/gryffindor.png',
-		hitPoints: 100,
-		attackPower: 7 		
+		hitPoints: 120,
+		attackPower: 10 		
 	}, {
-		id: 3,
+		id: 2,
 		name: "Slytherin",
 		pic: 'assets/images/slytherin.png',
-		hitPoints: 150,
-		attackPower: 10 
+		hitPoints: 125,
+		attackPower: 9 
 	}, {
-		id: 4,
+		id: 3,
 		name: "Ravenclaw",
 		pic: 'assets/images/ravenclaw.png',
-		hitPoints: 180,
-		attackPower: 12
+		hitPoints: 100,
+		attackPower: 7 
 	} ];
 
 	var haveCharacter = false;	//If you've picked your character or not
 	var haveAttacker = false;	//If you have an opponent or not
-	var enemiesLeft = 3;
 
 
 	for(var i = 0; i < enemyArray.length; i++) {
-		choices += "<div id=" + enemyArray[i].id + " class='btn character text-center' value=" + enemyArray[i].id + "><img class='houses' src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + "><br> " + enemyArray[i].hitPoints + "<br> " + enemyArray[i].attackPower + " </div>";
-		console.log(choices);
+		choices += "<div id=" + enemyArray[i].id + " class='btn character text-center' value=" + enemyArray[i].id +
+		"><img class='houses' src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + "><br> " + enemyArray[i].hitPoints +
+		"<br> " + enemyArray[i].attackPower + " </div>";
 	}
 
 	$("#picking").html(choices);
@@ -47,9 +47,6 @@ $(document).ready(function() {
 			myChar = $(this).attr('id');
 			$("#myguy").append(this);
 			$(this).addClass("hero");
-
-			console.log(myChar);
-			console.log(enemyArray[myChar].hitPoints);
 
 			haveCharacter = true;
 		}
@@ -72,7 +69,7 @@ $(document).ready(function() {
 		else if(haveCharacter && haveAttacker) {
 			enemyArray[opponentChar].hitPoints  = enemyArray[opponentChar].hitPoints - enemyArray[myChar].attackPower;	//Hit Them
 			if(enemyArray[opponentChar].hitPoints < 0) {
-				$("#enemy").remove(".fighting");
+				$(".fighting").remove();
 				console.log("They die");
 				haveAttacker = false;
 			}
