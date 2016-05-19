@@ -3,3 +3,11 @@ body {
 	background-size: cover;
 
 }
+
+#attack {
+	background-color: #fff;
+}
+
+.houses {
+	width: 200px;
+}

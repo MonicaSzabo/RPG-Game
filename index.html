@@ -15,18 +15,18 @@
 <body>
 <div class="container-fluid">
 	<div class="row">
-		<h1 class="text-center">Harry Potter RPG Game</h1>
+		<h1 class="text-center"></h1>
 	</div>
 	<div class="row">
 		<div id="picking"></div>
 	</div>
 	<div class="row">
 		<div id="myguy" class="col-md-4"></div>
-		<div class="col-md-4"><button id="attack" class="btn" value=attack><h1>Attack</h1></button></div>
+		<div class="col-md-4"><div id="attack" class="btn" value=attack><h1>Attack</h1></button></div>
 		<div id="enemy" class="col-md-4"></div>
 	</div>
 	<div class="row">
-		<button id="restart" class="btn" value=restart><h1>Restart</h1></button>
+		<!-- <button id="restart" class="btn" value=restart><h1>Restart</h1></button> -->
 	</div>
 </div>
 
@@ -35,26 +35,27 @@ $(document).ready(function() {
 	var myChar;
 	var opponentChar;
 
+	var choices = [];
 	var enemyArray = [ {
-		id: "char1",
+		id: 1,
 		name: "Hufflepuff",
 		pic: 'assets/images/hufflepuff.png',
 		hitPoints: 120,
 		attackPower: 5
 	}, {
-		id: "char2",
+		id: 2,
 		name: "Gryffindor",
 		pic: 'assets/images/gryffindor.png',
 		hitPoints: 100,
 		attackPower: 10 		
 	}, {
-		id: "char3",
+		id: 3,
 		name: "Slytherin",
 		pic: 'assets/images/slytherin.png',
 		hitPoints: 150,
 		attackPower: 15 
 	}, {
-		id: "char4",
+		id: 4,
 		name: "Ravenclaw",
 		pic: 'assets/images/ravenclaw.png',
 		hitPoints: 180,
@@ -65,25 +66,28 @@ $(document).ready(function() {
 	var haveAttacker = false;	//If you have an opponent or not
 	var enemiesLeft = 3;
 
+
 	for(var i = 0; i < enemyArray.length; i++) {
-			$("#picking").append("<div id=" + enemyArray[i].id + " class='btn character' value=" + enemyArray[i].id + "><img src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + ">" + "<br> " + enemyArray[i].hitPoints + "<br> " + enemyArray[i].attackPower + " </div>");
-			// $("#picking").append("<img src=" + enemyArray[i].pic + ">")
+		choices += "<div id=" + enemyArray[i].id + " class='btn character text-center' value=" + enemyArray[i].id + "><img class='houses' src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + "><br> " + enemyArray[i].hitPoints + "<br> " + enemyArray[i].attackPower + " </div>";
+		console.log(choices);
 	}
+
+	$("#picking").html(choices);
 
 
 	$('.character').on("click", function(){
 		if(!haveCharacter) {	//Picking your character
-			myChar = $(this);
+			myChar = $(this).attr('id');
 			$("#myguy").append(this);
 			$(this).addClass("hero");
 
 			console.log(myChar);
-			console.log(myChar.hitPoints);
+			console.log(enemyArray[myChar].hitPoints);
 
 			haveCharacter = true;
 		}
 		else if(!haveAttacker && haveCharacter) {	//You have a character and you're picking your opponent
-			opponentChar = $(this);
+			opponentChar = $(this).attr('id');
 			$("#enemy").append(this);
 			$(this).addClass("fighting");
 
@@ -99,24 +103,24 @@ $(document).ready(function() {
 			console.log("pick your attacker");
 		}
 		else if(haveCharacter && haveAttacker) {
-			opponentChar.hitPoints = opponentChar.hitPoints - myChar.attackPower;	//Hit Them
-			if(opponentChar.hitPoints < 0) {
+			enemyArray[opponentChar].hitPoints  = enemyArray[opponentChar].hitPoints - enemyArray[myChar].attackPower;	//Hit Them
+			if(enemyArray[opponentChar].hitPoints < 0) {
 				$("#enemy").remove(".fighting");
 				console.log("They die");
 				haveAttacker = false;
 			}
-			myChar.hitPoints = myChar.hitPoints - opponentChar.attackPower;	//Get Hit
-			if(myChar.hitPoints < 0) {
+			enemyArray[myChar].hitPoints = enemyArray[myChar].hitPoints - enemyArray[opponentChar].attackPower;	//Get Hit
+			if(enemyArray[myChar].hitPoints < 0) {
 				console.log("I die");
 			}
 
-			myChar.attackPower = myChar.attackPower + myChar.attackPower;	//Get Stronger
+			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + 5;	//Get Stronger
 
 
-			console.log("My Characters HP: " + myChar.hitPoints);
-			console.log("My Characters AP: " + myChar.attackPower);
-			console.log("My Opponent HP: " + opponentChar.hitPoints);
-			console.log("My Opponent AP: " + opponentChar.attackPower);
+			console.log("My Characters HP: " + enemyArray[myChar].hitPoints);
+			console.log("My Characters AP: " + enemyArray[myChar].attackPower);
+			console.log("My Opponent HP: " + enemyArray[opponentChar].hitPoints);
+			console.log("My Opponent AP: " + enemyArray[opponentChar].attackPower);
 			console.log("========================================");
 		}
 	});
