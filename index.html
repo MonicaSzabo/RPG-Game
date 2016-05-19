@@ -36,19 +36,27 @@ $(document).ready(function() {
 	var opponentChar;
 
 	var enemyArray = [ {
-		name: "char1",
+		id: "char1",
+		name: "Hufflepuff",
+		pic: 'assets/images/hufflepuff.png',
 		hitPoints: 120,
 		attackPower: 5
 	}, {
-		name: "char2",
+		id: "char2",
+		name: "Gryffindor",
+		pic: 'assets/images/gryffindor.png',
 		hitPoints: 100,
 		attackPower: 10 		
 	}, {
-		name: "char3",
+		id: "char3",
+		name: "Slytherin",
+		pic: 'assets/images/slytherin.png',
 		hitPoints: 150,
 		attackPower: 15 
 	}, {
-		name: "char4",
+		id: "char4",
+		name: "Ravenclaw",
+		pic: 'assets/images/ravenclaw.png',
 		hitPoints: 180,
 		attackPower: 20
 	} ];
@@ -58,7 +66,8 @@ $(document).ready(function() {
 	var enemiesLeft = 3;
 
 	for(var i = 0; i < enemyArray.length; i++) {
-			$("#picking").append("<div id=" + enemyArray[i].name + " class='btn character' value=" + enemyArray[i].name + ">" + enemyArray[i].name + "<br> " + enemyArray[i].hitPoints + "<br> " + enemyArray[i].attackPower + " </div>");
+			$("#picking").append("<div id=" + enemyArray[i].id + " class='btn character' value=" + enemyArray[i].id + "><img src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + ">" + "<br> " + enemyArray[i].hitPoints + "<br> " + enemyArray[i].attackPower + " </div>");
+			// $("#picking").append("<img src=" + enemyArray[i].pic + ">")
 	}
 
 
