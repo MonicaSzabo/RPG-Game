@@ -41,6 +41,7 @@ $(document).ready(function() {
 	}
 
 	$("#picking").html(choices);
+	attachCharacterOnClick();
 
 	function restart() {		//Restarts all of the values
 		myChar;
@@ -84,6 +85,7 @@ $(document).ready(function() {
 		$("#picking").html(choices);
 		$('.hero').remove();
 		$('.fighting').remove();
+		attachCharacterOnClick();
 	}
 
 	function printCharacters(enemyArray, myChar, opponentChar) {
@@ -93,27 +95,29 @@ $(document).ready(function() {
 		var badguy = "<div id=" + enemyArray[opponentChar].id + " class='btn character text-center fighting' value=" + enemyArray[opponentChar].id +
 			"><img class='houses' src=" + enemyArray[opponentChar].pic + " alt=" + enemyArray[opponentChar].name + "><br> " + enemyArray[opponentChar].hitPoints +
 			"<br> " + enemyArray[opponentChar].attackPower + " </div>";
-		$('.hero').html(hero);
-		$('.fighting').html(badguy);
+		$('#myguy').html(hero);
+		$('#enemy').html(badguy);
 	}
 
 
-	$('.character').on("click", function(){
-		if(!haveCharacter) {	//Picking your character
-			myChar = $(this).attr('id');
-			$("#myguy").append(this);
-			$(this).addClass("hero");
+	function attachCharacterOnClick() {
+		$('.character').on("click", function(){
+			if(!haveCharacter) {	//Picking your character
+				myChar = $(this).attr('id');
+				$("#myguy").append(this);
+				$(this).addClass("hero");
 
-			haveCharacter = true;
-		}
-		else if(!haveAttacker && haveCharacter) {	//You have a character and you're picking your opponent
-			opponentChar = $(this).attr('id');
-			$("#enemy").append(this);
-			$(this).addClass("fighting");
+				haveCharacter = true;
+			}
+			else if(!haveAttacker && haveCharacter) {	//You have a character and you're picking your opponent
+				opponentChar = $(this).attr('id');
+				$("#enemy").append(this);
+				$(this).addClass("fighting");
 
-			haveAttacker = true;
-		}
-	});
+				haveAttacker = true;
+			}
+		});
+	}
 
 	$('#attack').on("click", function() {
 		if(!haveCharacter) {
@@ -124,6 +128,10 @@ $(document).ready(function() {
 		}
 		else if(haveCharacter && haveAttacker) {
 			enemyArray[opponentChar].hitPoints  = enemyArray[opponentChar].hitPoints - enemyArray[myChar].attackPower;	//Hit Them
+			enemyArray[myChar].hitPoints = enemyArray[myChar].hitPoints - enemyArray[opponentChar].attackPower;	//Get Hit
+			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + 5;	//Get Stronger
+
+
 			if(enemyArray[opponentChar].hitPoints < 0) {
 				numEnemies--;
 				if(numEnemies > 0) {
@@ -137,22 +145,14 @@ $(document).ready(function() {
 				}
 				
 			}
-			enemyArray[myChar].hitPoints = enemyArray[myChar].hitPoints - enemyArray[opponentChar].attackPower;	//Get Hit
-			if(enemyArray[myChar].hitPoints < 0) {
+			else if(enemyArray[myChar].hitPoints < 0) {
 				alert("You have been defeated!  Try again!");
 				restart();
 			}
+			else {
+				printCharacters(enemyArray, myChar, opponentChar);
+			}
 
-			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + 5;	//Get Stronger
-
-			printCharacters(enemyArray, myChar, opponentChar);
-
-
-			console.log("My Characters HP: " + enemyArray[myChar].hitPoints);
-			console.log("My Characters AP: " + enemyArray[myChar].attackPower);
-			console.log("My Opponent HP: " + enemyArray[opponentChar].hitPoints);
-			console.log("My Opponent AP: " + enemyArray[opponentChar].attackPower);
-			console.log("========================================");
 		}
 	});
 
