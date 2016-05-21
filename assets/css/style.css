@@ -10,8 +10,8 @@ body {
 }
 
 @font-face {
-	font-family: 'PARSELTO';
-	src: url(../PARSELTO.ttf) format('truetype');
+	font-family: 'Parsel';
+	src: url(../ParselTongue.ttf) format('truetype');
 }
 
 @font-face {
@@ -67,12 +67,12 @@ h2 {
 }
 
 #attack {
-	font-family: 'PARSELTO';
+	font-family: 'Parsel';
 	font-size: 24px;
 }
 
 #restart {
-	font-family: 'PARSELTO';
+	font-family: 'Parsel';
 	font-size: 22px;
 }
 
