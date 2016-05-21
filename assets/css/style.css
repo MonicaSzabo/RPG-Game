@@ -80,3 +80,14 @@ h2 {
 	background-color: #99b4c7;
 	font-family: sans-serif;
 }
+
+#winsloses {
+	background-color: #99b4c7;
+	opacity: 0.7;
+	font-family: 'HP';
+	float: right;
+	margin-right: 50px;
+	margin-top: 20px;
+	padding: 20px;
+
+}

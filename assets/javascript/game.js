@@ -1,5 +1,7 @@
 $(document).ready(function() {
 	var myChar, opponentChar, choices, enemyArray, haveCharacter, haveAttacker, numEnemies, rounds;	//Set Global Variables
+	var wins = 0;
+	var loses = 0;
 
 	function varSet() {		//Sets all of the variable values
 		myChar;
@@ -23,7 +25,7 @@ $(document).ready(function() {
 			name: "Slytherin",
 			pic: 'assets/images/slytherin.png',
 			hitPoints: 120,
-			attackPower: 21 
+			attackPower: 19 
 		}, {
 			id: 3,
 			name: "Ravenclaw",
@@ -119,6 +121,8 @@ $(document).ready(function() {
 				else {
 					whatHappens();
 					alert("You win the house cup!  Play again!");
+					wins++;
+					$('#winsloses').html("Overall Wins: " + wins + "&nbsp;&nbsp;Loses: " + loses);
 					varSet();
 				}
 				
@@ -127,6 +131,8 @@ $(document).ready(function() {
 				whatHappens();
 				$('#whathappens').append("<br>You have been defeated!!");
 				alert("Your house has been defeated!  Try again!");
+				loses++;
+				$('#winsloses').html("Overall Wins: " + wins + "&nbsp;&nbsp;Loses: " + loses);
 				varSet();
 			}
 			else {
