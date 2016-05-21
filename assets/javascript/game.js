@@ -129,7 +129,6 @@ $(document).ready(function() {
 			}
 			else if(enemyArray[myChar].hitPoints < 0) {
 				whatHappens();
-				$('#whathappens').append("<br>You have been defeated!!");
 				alert("Your house has been defeated!  Try again!");
 				loses++;
 				$('#winsloses').html("Overall Wins: " + wins + "&nbsp;&nbsp;Loses: " + loses);
