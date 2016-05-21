@@ -4,10 +4,6 @@ body {
 
 }
 
-#attack {
-	background-color: #fff;
-}
-
 .houses {
 	width: 100px;
 }
@@ -29,7 +25,7 @@ body {
 
 #picking {
 	opacity: 0.7;
-	background-color: white;
+	background-color: #99b4c7;
 	width: 700px;
 	height: 300px;
 	margin: 0 auto;

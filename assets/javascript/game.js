@@ -1,49 +1,7 @@
 $(document).ready(function() {
-	var myChar;
-	var opponentChar;
+	var myChar, opponentChar, choices, enemyArray, haveCharacter, haveAttacker, numEnemies;	//Set Global Variables
 
-	var choices = [];
-	var enemyArray = [ {
-		id: 0,
-		name: "Hufflepuff",
-		pic: 'assets/images/hufflepuff.jpg',
-		hitPoints: 20,
-		attackPower: 5
-	}, {
-		id: 1,
-		name: "Gryffindor",
-		pic: 'assets/images/gryffindor.png',
-		hitPoints: 120,
-		attackPower: 10 		
-	}, {
-		id: 2,
-		name: "Slytherin",
-		pic: 'assets/images/slytherin.png',
-		hitPoints: 125,
-		attackPower: 9 
-	}, {
-		id: 3,
-		name: "Ravenclaw",
-		pic: 'assets/images/ravenclaw.png',
-		hitPoints: 100,
-		attackPower: 7 
-	} ];
-
-	var haveCharacter = false;	//If you've picked your character or not
-	var haveAttacker = false;	//If you have an opponent or not
-	var numEnemies = 3;
-
-
-	for(var i = 0; i < enemyArray.length; i++) {
-		choices += "<div id=" + enemyArray[i].id + " class='btn character text-center' value=" + enemyArray[i].id +
-		"><img class='houses' src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + "><br> " + enemyArray[i].hitPoints +
-		"<br> " + enemyArray[i].attackPower + " </div>";
-	}
-
-	$("#picking").html(choices);
-	attachCharacterOnClick();
-
-	function restart() {		//Restarts all of the values
+	function varSet() {		//Sets all of the variable values
 		myChar;
 		opponentChar;
 
@@ -52,27 +10,28 @@ $(document).ready(function() {
 			id: 0,
 			name: "Hufflepuff",
 			pic: 'assets/images/hufflepuff.jpg',
-			hitPoints: 20,
+			hitPoints: 110,
 			attackPower: 5
 		}, {
 			id: 1,
 			name: "Gryffindor",
 			pic: 'assets/images/gryffindor.png',
-			hitPoints: 120,
-			attackPower: 10 		
+			hitPoints: 180,
+			attackPower: 25 		
 		}, {
 			id: 2,
 			name: "Slytherin",
 			pic: 'assets/images/slytherin.png',
-			hitPoints: 125,
-			attackPower: 9 
+			hitPoints: 150,
+			attackPower: 20 
 		}, {
 			id: 3,
 			name: "Ravenclaw",
 			pic: 'assets/images/ravenclaw.png',
-			hitPoints: 100,
-			attackPower: 7 
+			hitPoints: 120,
+			attackPower: 8 
 		} ];
+
 		haveCharacter = false;
 		haveAttacker = false;
 		numEnemies = 3;
@@ -82,13 +41,17 @@ $(document).ready(function() {
 			"><img class='houses' src=" + enemyArray[i].pic + " alt=" + enemyArray[i].name + "><br> " + enemyArray[i].hitPoints +
 			"<br> " + enemyArray[i].attackPower + " </div>";
 		}
+
 		$("#picking").html(choices);
+		$("#todo").html("Click to choose your house");
+
 		$('.hero').remove();
 		$('.fighting').remove();
+
 		attachCharacterOnClick();
 	}
 
-	function printCharacters(enemyArray, myChar, opponentChar) {
+	function printCharacters() {
 		var hero = "<div id=" + enemyArray[myChar].id + " class='btn character text-center hero' value=" + enemyArray[myChar].id +
 			"><img class='houses' src=" + enemyArray[myChar].pic + " alt=" + enemyArray[myChar].name + "><br> " + enemyArray[myChar].hitPoints +
 			"<br> " + enemyArray[myChar].attackPower + " </div>";
@@ -108,13 +71,16 @@ $(document).ready(function() {
 				$(this).addClass("hero");
 
 				haveCharacter = true;
+				$("#todo").html("Now choose your opponent!");
 			}
-			else if(!haveAttacker && haveCharacter) {	//You have a character and you're picking your opponent
+			//You have a character and you're picking your opponent
+			else if(!haveAttacker && haveCharacter && myChar !== $(this).attr('id')) {	
 				opponentChar = $(this).attr('id');
 				$("#enemy").append(this);
 				$(this).addClass("fighting");
 
 				haveAttacker = true;
+				$("#todo").html("Now keep clicking attack to duel!");
 			}
 		});
 	}
@@ -129,7 +95,7 @@ $(document).ready(function() {
 		else if(haveCharacter && haveAttacker) {
 			enemyArray[opponentChar].hitPoints  = enemyArray[opponentChar].hitPoints - enemyArray[myChar].attackPower;	//Hit Them
 			enemyArray[myChar].hitPoints = enemyArray[myChar].hitPoints - enemyArray[opponentChar].attackPower;	//Get Hit
-			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + 5;	//Get Stronger
+			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + 8;	//Get Stronger
 
 
 			if(enemyArray[opponentChar].hitPoints < 0) {
@@ -137,28 +103,31 @@ $(document).ready(function() {
 				if(numEnemies > 0) {
 					$(".fighting").remove();
 					alert("You have defeated your foe! Pick another enemy!");
+					$("#todo").html("Who will you duel next?");
 					haveAttacker = false;
 				}
 				else {
-					alert("You have beat all the enemies!  Play again!");
-					restart();
+					alert("You win the house cup!  Play again!");
+					varSet();
 				}
 				
 			}
 			else if(enemyArray[myChar].hitPoints < 0) {
-				alert("You have been defeated!  Try again!");
-				restart();
+				alert("Your house has been defeated!  Try again!");
+				varSet();
 			}
 			else {
-				printCharacters(enemyArray, myChar, opponentChar);
+				printCharacters();
 			}
 
 		}
 	});
 
 	$('#restart').on("click", function(){
-		restart();
+		varSet();
 	});
 
+	attachCharacterOnClick();
+	varSet();
 
 });
