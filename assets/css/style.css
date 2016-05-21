@@ -4,8 +4,37 @@ body {
 
 }
 
+@font-face {
+	font-family: 'HP';
+	src: url(../ParryHotter.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'PARSELTO';
+	src: url(../PARSELTO.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: 'Lumos';
+	src: url(../WizardsMagic.ttf) format('truetype');
+}
+
+h1 {
+	font-family: 'HP';
+	float: left;
+	color: #FFBC4F;
+	font-size: 50px;
+	margin: 20px;
+	line-height: 150%;
+	opacity: 0.7;
+}
+
+h2 {
+	font-family: 'Lumos';
+}
+
 .houses {
-	width: 100px;
+	width: 80px;
 }
 
 .character {
@@ -26,8 +55,8 @@ body {
 #picking {
 	opacity: 0.7;
 	background-color: #99b4c7;
-	width: 700px;
-	height: 300px;
+	width: 550px;
+	height: 250px;
 	margin: 0 auto;
 	padding: 30px;
 }
@@ -35,4 +64,19 @@ body {
 .theCenter {
 	margin: 0 auto;
 	padding: 30px;
+}
+
+#attack {
+	font-family: 'PARSELTO';
+	font-size: 24px;
+}
+
+#restart {
+	font-family: 'PARSELTO';
+	font-size: 22px;
+}
+
+#whathappens {
+	background-color: #99b4c7;
+	font-family: sans-serif;
 }
