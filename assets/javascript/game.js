@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	var myChar, opponentChar, choices, enemyArray, haveCharacter, haveAttacker, numEnemies;	//Set Global Variables
+	var myChar, opponentChar, choices, enemyArray, haveCharacter, haveAttacker, numEnemies, rounds;	//Set Global Variables
 
 	function varSet() {		//Sets all of the variable values
 		myChar;
@@ -10,31 +10,32 @@ $(document).ready(function() {
 			id: 0,
 			name: "Hufflepuff",
 			pic: 'assets/images/hufflepuff.jpg',
-			hitPoints: 130,
+			hitPoints: 150,
 			attackPower: 5
 		}, {
 			id: 1,
 			name: "Gryffindor",
 			pic: 'assets/images/gryffindor.png',
 			hitPoints: 100,
-			attackPower: 11 		
+			attackPower: 25 		
 		}, {
 			id: 2,
 			name: "Slytherin",
 			pic: 'assets/images/slytherin.png',
-			hitPoints: 110,
-			attackPower: 9 
+			hitPoints: 120,
+			attackPower: 21 
 		}, {
 			id: 3,
 			name: "Ravenclaw",
 			pic: 'assets/images/ravenclaw.png',
-			hitPoints: 120,
-			attackPower: 7 
+			hitPoints: 140,
+			attackPower: 9 
 		} ];
 
 		haveCharacter = false;
 		haveAttacker = false;
 		numEnemies = 3;
+		rounds = 7;
 
 		for(var i = 0; i < enemyArray.length; i++) {
 			choices += "<div id=" + enemyArray[i].id + " class='btn character text-center' value=" + enemyArray[i].id +
@@ -66,7 +67,7 @@ $(document).ready(function() {
 	function whatHappens() {
 		var description = "You attack " + enemyArray[opponentChar].name + " for " + enemyArray[myChar].attackPower + " damage!<br>" +
 			enemyArray[opponentChar].name + " counter attacks for " + enemyArray[opponentChar].attackPower + " damage!<br>" +
-			"Your attack power has increased by 8!";
+			"Your attack power has increased by " + rounds + "!";
 		$('#whathappens').html(description);
 	}
 
@@ -78,6 +79,7 @@ $(document).ready(function() {
 				$(this).addClass("hero");
 
 				haveCharacter = true;
+				$('#whathappens').html("");
 				$("#todo").html("Choose your opponent!");
 			}
 			//You have a character and you're picking your opponent
@@ -87,6 +89,7 @@ $(document).ready(function() {
 				$(this).addClass("fighting");
 
 				haveAttacker = true;
+				$('#whathappens').html("");
 				$("#todo").html("Keep clicking attack to duel!");
 			}
 		});
@@ -94,12 +97,13 @@ $(document).ready(function() {
 
 	$('#attack').on("click", function() {
 		if(!haveCharacter) {
-			alert("You need to pick your character first!")
+			$('#whathappens').html("You need to pick your house first!");
 		}
 		else if(!haveAttacker) {
-			alert("Pick who you are fighting!");
+			$('#whathappens').html("Pick who you are fighting!");
 		}
 		else if(haveCharacter && haveAttacker) {
+			rounds++;
 			enemyArray[opponentChar].hitPoints  = enemyArray[opponentChar].hitPoints - enemyArray[myChar].attackPower;	//Hit Them
 			enemyArray[myChar].hitPoints = enemyArray[myChar].hitPoints - enemyArray[opponentChar].attackPower;	//Get Hit
 
@@ -108,8 +112,7 @@ $(document).ready(function() {
 				numEnemies--;
 				if(numEnemies > 0) {
 					$(".fighting").remove();
-					whatHappens();
-					alert("You have defeated your foe! Pick another enemy!");
+					$('#whathappens').html("");
 					$("#todo").html("Who will you duel next?");
 					haveAttacker = false;
 				}
@@ -122,6 +125,7 @@ $(document).ready(function() {
 			}
 			else if(enemyArray[myChar].hitPoints < 0) {
 				whatHappens();
+				$('#whathappens').append("<br>You have been defeated!!");
 				alert("Your house has been defeated!  Try again!");
 				varSet();
 			}
@@ -130,7 +134,7 @@ $(document).ready(function() {
 				printCharacters();
 			}
 
-			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + 8;	//Get Stronger
+			enemyArray[myChar].attackPower = enemyArray[myChar].attackPower + rounds;	//Get Stronger
 		}
 	});
 
